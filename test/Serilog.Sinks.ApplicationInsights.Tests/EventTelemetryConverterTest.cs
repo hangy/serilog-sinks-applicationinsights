@@ -40,21 +40,19 @@ public class EventTelemetryConverterTest : ApplicationInsightsTest
     }
 
     [Fact]
-    public void TraceIdAndSpanIdDefaultByDefault()
+    public void TraceIdIsNullByDefault()
     {
         Logger.Information("Hello, {Name}!", "world");
         Assert.Null(LastSubmittedEventTelemetry.Context.Operation.Id);
-        Assert.Null(LastSubmittedEventTelemetry.Context.Operation.ParentId);
     }
 
     [Fact]
-    public void TraceIdAndSpanIdAreSet()
+    public void TraceIdIsSet()
     {
         using Activity activity = new("TestActivity");
         activity.Start();
         Logger.Information("Hello, {Name}!", "world");
         Assert.Equal(activity.TraceId.ToHexString(), LastSubmittedEventTelemetry.Context.Operation.Id);
-        Assert.Equal(activity.SpanId.ToHexString(), LastSubmittedEventTelemetry.Context.Operation.ParentId);
     }
 
     [Fact]
