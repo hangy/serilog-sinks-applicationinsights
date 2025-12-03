@@ -164,7 +164,9 @@ public abstract class TelemetryConverterBase : ITelemetryConverter
         if (telemetryProperties is ITelemetry telemetry)
         {
             // Operation.Id (TraceId)
-            if (logEvent.Properties.TryGetValue(TraceIdProperty, out var traceIdProp))
+            if (logEvent.Properties.TryGetValue(OperationIdProperty, out var operationIdProp))
+                telemetry.Context.Operation.Id = operationIdProp.ToString().Trim('"');
+            else if (logEvent.Properties.TryGetValue(TraceIdProperty, out var traceIdProp))
                 telemetry.Context.Operation.Id = traceIdProp.ToString().Trim('"');
              else if (logEvent.TraceId is ActivityTraceId traceId)
                 telemetry.Context.Operation.Id = traceId.ToHexString();

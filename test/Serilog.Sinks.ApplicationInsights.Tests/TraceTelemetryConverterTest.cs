@@ -65,4 +65,25 @@ public class TraceTelemetryConverterTest : ApplicationInsightsTest
         Assert.Equal(operationId, LastSubmittedTraceTelemetry.Context.Operation.Id);
         Assert.Null(LastSubmittedTraceTelemetry.Context.Operation.ParentId);
     }
+
+    [Fact]
+    public void ParentSpanIdIsSet()
+    {
+        Logger.Information("Test {ParentSpanId}", "parent123");
+        Assert.Equal("parent123", LastSubmittedTraceTelemetry.Context.Operation.ParentId);
+    }
+
+    [Fact]
+    public void OperationNameIsSet()
+    {
+        Logger.Information("Test {OperationName}", "MyOperation");
+        Assert.Equal("MyOperation", LastSubmittedTraceTelemetry.Context.Operation.Name);
+    }
+
+    [Fact]
+    public void VersionIsSet()
+    {
+        Logger.Information("Test {version}", "1.2.3");
+        Assert.Equal("1.2.3", LastSubmittedTraceTelemetry.Context.Component.Version);
+    }
 }
